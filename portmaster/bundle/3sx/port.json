@@ -1,0 +1,26 @@
+{
+    "version": 2,
+    "name": "3sx.zip",
+    "items": [
+        "3sx.sh",
+        "3sx"
+    ],
+    "items_opt": null,
+    "attr": {
+        "title": "Street Fighter III: 3rd Strike",
+        "desc": "Native port of Street Fighter III: 3rd Strike for the Anbernic H700 family. Requires SF33RD.AFS extracted from a legally owned PS2 disc.",
+        "inst": "Place SF33RD.AFS in /roms/ports/3sx/conf/resources/.",
+        "genres": [
+            "fighting",
+            "arcade"
+        ],
+        "porter": [
+            "TODO_porter_handle"
+        ],
+        "rtr": false,
+        "runtime": null,
+        "arch": [
+            "aarch64"
+        ]
+    }
+}

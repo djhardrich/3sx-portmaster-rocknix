@@ -1,0 +1,36 @@
+# Python
+
+.venv
+venv
+__pycache__
+
+# macOS
+
+.DS_Store
+
+# IDEs
+
+.vscode
+.cache
+
+# Project
+
+build
+temp
+third_party
+states
+rom
+dump
+*.AFS
+
+# Worktrees
+.worktrees
+
+# Serena agent state
+.serena
+
+# PortMaster cross-build outputs
+/build-aarch64/
+/third_party/aarch64/
+/dist/
+diag-out

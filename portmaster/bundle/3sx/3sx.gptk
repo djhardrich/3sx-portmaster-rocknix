@@ -1,0 +1,7 @@
+# 3sx — Street Fighter III: 3rd Strike
+# gptokeyb is only used to translate the PortMaster quit combo
+# (start + select) into the appropriate signal. The game reads gamepad
+# input directly through SDL3, so all other buttons are passthrough.
+
+back = "esc"
+hotkey = "select"

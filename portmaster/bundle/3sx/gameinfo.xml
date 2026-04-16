@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<gameList>
+    <game>
+        <path>./3sx.sh</path>
+        <name>Street Fighter III: 3rd Strike</name>
+        <desc>Native port of Street Fighter III: 3rd Strike (3sx) for handhelds. Requires SF33RD.AFS extracted from a legally owned PS2 copy of Street Fighter III: 3rd Strike or Street Fighter Anniversary Collection.</desc>
+        <releasedate>20260415T000000</releasedate>
+        <developer>Capcom (original); CrowdedStreet (port)</developer>
+        <publisher>Capcom</publisher>
+        <genre>Fighting</genre>
+        <image>./3sx/cover.png</image>
+    </game>
+</gameList>

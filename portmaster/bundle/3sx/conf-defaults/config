@@ -1,0 +1,9 @@
+# 3sx default config for the H700 PortMaster build.
+# See https://github.com/crowded-street/3sx/blob/main/docs/config.md for
+# the full list of options. The launcher copies this file into
+# /roms/ports/3sx/conf/config on first launch (without overwriting an
+# existing user config).
+
+fullscreen = true
+scalemode = integer
+scanlines = 0
