@@ -53,15 +53,14 @@ static void setup_keyboard() {
         return;
     }
 
-    for (int i = 0; i < SDL_arraysize(input_sources); i++) {
-        SDLPad_InputSource* input_source = &input_sources[i];
-
-        if (input_source->type == SDLPAD_INPUT_NONE) {
-            input_source->type = SDLPAD_INPUT_KEYBOARD;
-            keyboard_index = i;
-            connected_input_sources += 1;
-            break;
-        }
+    // Keyboard is a P1-only fallback. Never assign it to slot 1 — on handhelds,
+    // gptokeyb's "Fake Keyboard" virtual device would otherwise become P2 and
+    // ghost every physical button press as a P2 input.
+    SDLPad_InputSource* input_source = &input_sources[0];
+    if (input_source->type == SDLPAD_INPUT_NONE) {
+        input_source->type = SDLPAD_INPUT_KEYBOARD;
+        keyboard_index = 0;
+        connected_input_sources += 1;
     }
 }
 

@@ -58,9 +58,17 @@ export LD_LIBRARY_PATH="$GAMEDIR/libs.${DEVICE_ARCH}:/usr/lib:/usr/lib64:/usr/li
 export XDG_DATA_HOME="$CONFDIR"
 export SDL_GAMECONTROLLERCONFIG="$sdl_controllerconfig"
 
-# Force SDL3's KMSDRM video driver.
+# Video: prefer Wayland when a compositor is active (e.g. PanicOS/sway);
+# fall back to KMSDRM on bare-metal CFWs (e.g. ROCKNIX) where WAYLAND_DISPLAY
+# is unset.
 export SDL_VIDEODRIVER="${SDL_VIDEODRIVER:-kmsdrm}"
+[[ -n "${WAYLAND_DISPLAY}" && "${SDL_VIDEODRIVER}" == "kmsdrm" ]] && export SDL_VIDEODRIVER=wayland
+
+# Audio: bundled SDL3 supports alsa/pulse/dummy/disk — no pipewire driver.
+# Map pipewire → pulse so SDL3 routes through the pipewire-pulse socket at
+# $XDG_RUNTIME_DIR/pulse/native, which is active on PanicOS.
 export SDL_AUDIODRIVER="${SDL_AUDIODRIVER:-alsa}"
+[[ "${SDL_AUDIODRIVER}" == "pipewire" ]] && export SDL_AUDIODRIVER=pulse
 
 # Don't require KMSDRM master if the frontend hasn't released it yet.
 export SDL_KMSDRM_REQUIRE_DRM_MASTER="${SDL_KMSDRM_REQUIRE_DRM_MASTER:-0}"
