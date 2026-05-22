@@ -29,6 +29,7 @@ echo "==> Cross-building third-party deps"
 echo "==> Configuring 3sx for aarch64"
 cmake -S "$ROOT_DIR" -B "$BUILD_DIR" \
     -DCMAKE_TOOLCHAIN_FILE="$PM_DIR/cmake/aarch64-linux-gnu.cmake" \
+    -DTHIRD_PARTY_DIR="$THIRD_PARTY" \
     -DPORTMASTER=ON \
     -DCMAKE_BUILD_TYPE=Release
 

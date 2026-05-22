@@ -239,7 +239,7 @@ else
         -DENABLE_TESTING=OFF \
         -DUSE_SHARED_TF_PSA_CRYPTO_LIBRARY=OFF \
         -DUSE_STATIC_TF_PSA_CRYPTO_LIBRARY=ON \
-        -DTF_PSA_CRYPTO_CONFIG_FILE="$TF_PSA_CRYPTO_SRC/tf-psa-crypto-$TF_PSA_CRYPTO_VERSION/configs/crypto-config-ccm-aes-sha256.h"
+        -DTF_PSA_CRYPTO_CONFIG_FILE="$ROOT_DIR/configs/crypto-config-ccm-aes-sha256.h"
 
     cmake --build "$TF_PSA_CRYPTO_SRC/cmake-build" -j"$JOBS"
     cmake --install "$TF_PSA_CRYPTO_SRC/cmake-build"

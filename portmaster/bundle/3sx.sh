@@ -53,6 +53,7 @@ chmod +x "$GAMEDIR/3sx" 2>/dev/null || true
 #   3. /usr/lib64 — some CFWs use the 64-suffix path instead
 #   4. /usr/lib/aarch64-linux-gnu — Debian-multiarch layout
 #   5. previously-set LD_LIBRARY_PATH (PortMaster / CFW env)
+DEVICE_ARCH="${DEVICE_ARCH:-aarch64}"
 export LD_LIBRARY_PATH="$GAMEDIR/libs.${DEVICE_ARCH}:/usr/lib:/usr/lib64:/usr/lib/aarch64-linux-gnu:$LD_LIBRARY_PATH"
 
 export XDG_DATA_HOME="$CONFDIR"
