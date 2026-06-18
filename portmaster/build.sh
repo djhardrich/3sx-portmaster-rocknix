@@ -91,7 +91,7 @@ rm -f "$PORT_DIR/licenses/.gitkeep"
 # 4. Build the zip (overwrite any previous build to avoid stale entries).
 echo "==> Building dist/3sx.zip"
 rm -f "$DIST_DIR/3sx.zip"
-( cd "$STAGE_DIR" && zip -r "$DIST_DIR/3sx.zip" "3sx.sh" "3sx" )
+( cd "$STAGE_DIR" && zip -r "$DIST_DIR/3sx.zip" "3sx" "3sx.sh" )
 ls -la "$DIST_DIR/3sx.zip"
 
 if [ "$DO_VERIFY" = "1" ]; then
