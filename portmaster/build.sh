@@ -10,7 +10,8 @@ THIRD_PARTY="$ROOT_DIR/third_party/aarch64"
 BUILD_DIR="$ROOT_DIR/build-aarch64"
 DIST_DIR="$ROOT_DIR/dist"
 STAGE_DIR="$DIST_DIR/staging"
-PORT_DIR="$STAGE_DIR/3sx"
+REL_DIR="$STAGE_DIR/3sx"   # outer release/wrapper dir (top level of the zip)
+PORT_DIR="$REL_DIR/3sx"    # inner data dir, installed on device to /roms/ports/3sx
 JOBS="${JOBS:-$(nproc)}"
 DO_VERIFY=0
 
@@ -75,11 +76,17 @@ for f in "$PORT_DIR/libs.aarch64/"*.so*; do
     fi
 done
 
-# Bundle template (port.json, gameinfo.xml, README, gptk, screenshot,
-# cover, conf-defaults).
+# Stage the bundle template into the inner data dir, then lift the
+# PortMaster catalog metadata up to the outer release dir, matching the
+# "new port structure" (https://portmaster.games/packaging.html):
+#   3sx/{port.json,README.md,gameinfo.xml,screenshot.png,cover.png,3sx.sh}
+#   3sx/3sx/{3sx,3sx.gptk,conf-defaults,libs.aarch64,licenses}
 cp -r "$PM_DIR/bundle/3sx/." "$PORT_DIR/"
-cp "$PM_DIR/bundle/3sx.sh" "$STAGE_DIR/"
-chmod +x "$STAGE_DIR/3sx.sh"
+for meta in port.json README.md gameinfo.xml screenshot.png cover.png; do
+    [ -e "$PORT_DIR/$meta" ] && mv "$PORT_DIR/$meta" "$REL_DIR/"
+done
+cp "$PM_DIR/bundle/3sx.sh" "$REL_DIR/"
+chmod +x "$REL_DIR/3sx.sh"
 
 # Licenses
 cp "$ROOT_DIR/LICENSE" "$PORT_DIR/licenses/LICENSE-3sx"
@@ -89,9 +96,10 @@ cp "$ROOT_DIR/THIRD_PARTY_NOTICES.txt" "$PORT_DIR/licenses/" 2>/dev/null || true
 rm -f "$PORT_DIR/licenses/.gitkeep"
 
 # 4. Build the zip (overwrite any previous build to avoid stale entries).
+# The single top-level entry is the outer 3sx/ release dir.
 echo "==> Building dist/3sx.zip"
 rm -f "$DIST_DIR/3sx.zip"
-( cd "$STAGE_DIR" && zip -r "$DIST_DIR/3sx.zip" "3sx" "3sx.sh" )
+( cd "$STAGE_DIR" && zip -r "$DIST_DIR/3sx.zip" "3sx" )
 ls -la "$DIST_DIR/3sx.zip"
 
 if [ "$DO_VERIFY" = "1" ]; then

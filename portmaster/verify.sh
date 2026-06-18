@@ -6,7 +6,8 @@ set -euo pipefail
 
 ROOT_DIR="${ROOT_DIR:-/src}"
 STAGE_DIR="$ROOT_DIR/dist/staging"
-PORT_DIR="$STAGE_DIR/3sx"
+REL_DIR="$STAGE_DIR/3sx"   # outer release/wrapper dir (top level of the zip)
+PORT_DIR="$REL_DIR/3sx"    # inner data dir
 BIN="$PORT_DIR/3sx"
 LIBDIR="$PORT_DIR/libs.aarch64"
 
@@ -32,19 +33,21 @@ case "$rpath_out" in
 esac
 
 # 3. JSON metadata validates
-python3 -m json.tool "$PORT_DIR/port.json" > /dev/null
+python3 -m json.tool "$REL_DIR/port.json" > /dev/null
 pass "port.json is valid JSON"
 
-# 4. Required files present
+# 4. Required files present. PortMaster "new port structure": catalog
+# metadata + launcher live in the outer release dir; runtime port files
+# live in the inner data dir.
 for f in \
     "$PORT_DIR/3sx" \
     "$PORT_DIR/3sx.gptk" \
-    "$PORT_DIR/port.json" \
-    "$PORT_DIR/gameinfo.xml" \
-    "$PORT_DIR/README.md" \
-    "$PORT_DIR/screenshot.png" \
     "$PORT_DIR/conf-defaults/config" \
-    "$STAGE_DIR/3sx.sh" ; do
+    "$REL_DIR/port.json" \
+    "$REL_DIR/gameinfo.xml" \
+    "$REL_DIR/README.md" \
+    "$REL_DIR/screenshot.png" \
+    "$REL_DIR/3sx.sh" ; do
     [ -e "$f" ] || fail "missing required file: $f"
 done
 pass "all required bundle files present"
