@@ -65,6 +65,28 @@ export SDL_GAMECONTROLLERCONFIG="$sdl_controllerconfig"
 export SDL_VIDEODRIVER="${SDL_VIDEODRIVER:-kmsdrm}"
 [[ -n "${WAYLAND_DISPLAY}" && "${SDL_VIDEODRIVER}" == "kmsdrm" ]] && export SDL_VIDEODRIVER=wayland
 
+# GPU driver: muOS and Knulli ship the proprietary Mali GLES blob (libmali)
+# and their mesa/panfrost GLES is broken or absent, so SDL3 must be pointed
+# straight at libmali or video comes up black/garbled (fix advised by the
+# PortMaster team). ROCKNIX has a working driver stack of its own, so we
+# leave it (and every other CFW) untouched. Auto-detect libmali across the
+# locations these distros use rather than hard-coding one path.
+case "$(echo "${CFW_NAME:-}" | tr '[:upper:]' '[:lower:]')" in
+    muos|knulli)
+        for mali in /usr/lib/libmali.so* \
+                    /usr/lib/aarch64-linux-gnu/libmali.so* \
+                    /usr/lib64/libmali.so*; do
+            if [ -e "$mali" ]; then
+                export SDL_VIDEO_GL_DRIVER="$mali"
+                export SDL_VIDEO_EGL_DRIVER="$mali"
+                echo "Detected ${CFW_NAME}: using Mali GLES driver $mali"
+                break
+            fi
+        done
+        [ -n "${SDL_VIDEO_EGL_DRIVER:-}" ] || echo "Warning: ${CFW_NAME} detected but no libmali.so found under /usr/lib*"
+        ;;
+esac
+
 # Audio: bundled SDL3 supports alsa/pulse/dummy/disk — no pipewire driver.
 # Map pipewire → pulse so SDL3 routes through the pipewire-pulse socket at
 # $XDG_RUNTIME_DIR/pulse/native, which is active on PanicOS.
